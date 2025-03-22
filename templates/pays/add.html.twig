@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {% if  pays is not defined %}
+                <form id="paysForm" action="{{ path('create_pays') }}" method="Post">
+                    <div class="modal-body">
+                        <input type="hidden" id="paysId">
+                            <div class="mb-3">
+                                <label>
+                                    Nom
+                                </label>
+                                <input type="text" id="paysNom" name="nom" class="form-control" placeholder="Nom du pays" required></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="btn_pays" class="btn btn-primary" name="enreg">
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            {% else %}
+                <form id="paysForm" action="{{ path('create_pays') }}" method="Post">
+                    <div class="modal-body">
+                        <input type="hidden" id="paysId" name="id" value="{{pays.id}}">
+                            <div class="mb-3">
+                                <label>
+                                    Nom
+                                </label>
+                                <input type="text" id="paysNom" name="nom" value="{{ pays.nom }}" class="form-control" placeholder="Nom du pays" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="btn_pays" class="btn btn-primary" name="modif">
+                                    Modifier
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

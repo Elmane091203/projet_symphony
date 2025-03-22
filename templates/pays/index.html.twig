@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Pays Tab -->
+    <div class="tab-pane active" id="pays">
+        <div class="d-flex justify-content-between mb-4">
+            <h2>
+                Gestion des Pays
+            </h2>
+            <a href="{{ path('app_pays_add') }}">
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>
+                    Ajouter Pays
+                </button>
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped table-hover" id="paysTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Nom
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for p in pays %}
+                            <tr>
+                                <td>
+                                    {{ p.id }}
+                                </td>
+                                <td>
+                                    {{ p.nom }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_pays_update', {'id': p.id}) }}">
+                                        <button class="btn btn-sm btn-success">
+
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </a>
+                                    <a href="{{ path('app_pays_delete', {'id': p.id}) }}">
+                                        <button class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
