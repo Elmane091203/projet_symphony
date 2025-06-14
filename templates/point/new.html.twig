@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Point{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Créer un nouveau point</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.nom) }}
+                {{ form_widget(form.nom) }}
+                {{ form_errors(form.nom) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.zone) }}
+                {{ form_widget(form.zone) }}
+                {{ form_errors(form.zone) }}
+                <small class="form-text text-muted">
+                    Note: Une zone ne peut pas avoir plus de 4 points de surveillance.
+                    {% for zone in zones %}
+                        <br>
+                        <span class="zone-info" data-zone-id="{{ zone.id }}" style="display: none;">
+                            Zone "{{ zone.nom }}": {{ zone.points|length }}/4 points
+                        </span>
+                    {% endfor %}
+                </small>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.nb_habitants) }}
+                {{ form_widget(form.nb_habitants) }}
+                {{ form_errors(form.nb_habitants) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.nb_symptomatiques) }}
+                {{ form_widget(form.nb_symptomatiques) }}
+                {{ form_errors(form.nb_symptomatiques) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.nb_positifs) }}
+                {{ form_widget(form.nb_positifs) }}
+                {{ form_errors(form.nb_positifs) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Créer</button>
+            <a href="{{ path('app_point_index') }}" class="btn btn-secondary">Retour</a>
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const zoneSelect = document.querySelector('#point_zone');
+            const zoneInfos = document.querySelectorAll('.zone-info');
+
+            function updateZoneInfo() {
+                const selectedZoneId = zoneSelect.value;
+                zoneInfos.forEach(info => {
+                    if (info.dataset.zoneId === selectedZoneId) {
+                        info.style.display = 'block';
+                    } else {
+                        info.style.display = 'none';
+                    }
+                });
+            }
+
+            zoneSelect.addEventListener('change', updateZoneInfo);
+            updateZoneInfo(); // Initial display
+        });
+    </script>
+{% endblock %} 

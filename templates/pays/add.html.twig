@@ -1,44 +1,53 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}{% if pays is defined %}Modifier{% else %}Ajouter{% endif %} un Pays{% endblock %}
+
 {% block body %}
-    <div class="modal-dialog">
-        <div class="modal-content">
-            {% if  pays is not defined %}
-                <form id="paysForm" action="{{ path('create_pays') }}" method="Post">
-                    <div class="modal-body">
-                        <input type="hidden" id="paysId">
-                            <div class="mb-3">
-                                <label>
-                                    Nom
-                                </label>
-                                <input type="text" id="paysNom" name="nom" class="form-control" placeholder="Nom du pays" required></div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" id="btn_pays" class="btn btn-primary" name="enreg">
-                                    Enregistrer
-                                </button>
-                            </div>
-                        </div>
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800">{% if pays is defined %}Modifier{% else %}Ajouter{% endif %} un Pays</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Formulaire</h6>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{{ path('create_pays') }}">
+                    {% if pays is defined %}
+                        <input type="hidden" name="id" value="{{ pays.id }}">
+                        <input type="hidden" name="modif" value="1">
+                    {% else %}
+                        <input type="hidden" name="enreg" value="1">
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="nom">Nom du pays</label>
+                        <input type="text" class="form-control" id="nom" name="nom" value="{{ pays.nom|default('') }}" required>
                     </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        {% if pays is defined %}
+                            <i class="fas fa-save"></i> Enregistrer
+                        {% else %}
+                            <i class="fas fa-plus"></i> Ajouter
+                        {% endif %}
+                    </button>
+                    <a href="{{ path('app_pays') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Annuler
+                    </a>
                 </form>
-            {% else %}
-                <form id="paysForm" action="{{ path('create_pays') }}" method="Post">
-                    <div class="modal-body">
-                        <input type="hidden" id="paysId" name="id" value="{{pays.id}}">
-                            <div class="mb-3">
-                                <label>
-                                    Nom
-                                </label>
-                                <input type="text" id="paysNom" name="nom" value="{{ pays.nom }}" class="form-control" placeholder="Nom du pays" required>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" id="btn_pays" class="btn btn-primary" name="modif">
-                                    Modifier
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

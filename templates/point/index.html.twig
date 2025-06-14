@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Points{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Liste des Points</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <a href="{{ path('app_point_new') }}" class="btn btn-primary mb-3">Créer un nouveau point</a>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Zone</th>
+                    <th>Nombre d'habitants</th>
+                    <th>Cas symptomatiques</th>
+                    <th>Cas positifs</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for point in points %}
+                <tr>
+                    <td>{{ point.id }}</td>
+                    <td>{{ point.nom }}</td>
+                    <td>{{ point.zone.nom }}</td>
+                    <td>{{ point.nbHabitants }}</td>
+                    <td>{{ point.nbSymptomatiques }}</td>
+                    <td>{{ point.nbPositifs }}</td>
+                    <td>
+                        <a href="{{ path('app_point_show', {'id': point.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ path('app_point_edit', {'id': point.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <form method="post" action="{{ path('app_point_delete', {'id': point.id}) }}" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce point ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ point.id) }}">
+                            <button class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">Aucun point trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %} 
